@@ -12,7 +12,6 @@ hide_st_style = """
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# --- ORDBOG TIL SPROG ---
 translations = {
     "en": {
         "title": "🚘 Dealer Portal (B2B Vehicles)",
@@ -22,11 +21,9 @@ translations = {
         "tax": "⚖️ Tax",
         "all": "All",
         "buy": "🛒 Buy now",
-        "view": "📸 View details & pictures",
+        "view": "📸 View details",
         "no_cars": "There are currently no active vehicles for sale.",
-        "vin": "VIN",
-        "loc": "Location",
-        "year": "Year",
+        "tech_data": "⚙️ Technical Data",
         "mail_sub": "Purchase of",
         "mail_body": "Hi Mathias and Brian,%0D%0A%0D%0AI would like to purchase the vehicle with VIN:"
     },
@@ -38,11 +35,9 @@ translations = {
         "tax": "⚖️ Steuer",
         "all": "Alle",
         "buy": "🛒 Jetzt kaufen",
-        "view": "📸 Details & Bilder ansehen",
+        "view": "📸 Details ansehen",
         "no_cars": "Derzeit stehen keine aktiven Fahrzeuge zum Verkauf.",
-        "vin": "FIN",
-        "loc": "Standort",
-        "year": "Jahr",
+        "tech_data": "⚙️ Technische Daten",
         "mail_sub": "Kauf von",
         "mail_body": "Hallo Mathias und Brian,%0D%0A%0D%0Aich möchte das Fahrzeug kaufen mit der FIN:"
     },
@@ -54,23 +49,19 @@ translations = {
         "tax": "⚖️ Belasting",
         "all": "Alle",
         "buy": "🛒 Nu kopen",
-        "view": "📸 Bekijk details & foto's",
+        "view": "📸 Bekijk details",
         "no_cars": "Er staan momenteel geen actieve voertuigen te koop.",
-        "vin": "Chassisnummer",
-        "loc": "Locatie",
-        "year": "Jaar",
+        "tech_data": "⚙️ Technische Gegevens",
         "mail_sub": "Aankoop van",
         "mail_body": "Hallo Mathias en Brian,%0D%0A%0D%0AIk wil graag het voertuig kopen met chassisnummer:"
     }
 }
 
-# --- SPROGVÆLGER I TOPPEN ---
 col_lang, _ = st.columns([1, 5])
 lang = col_lang.selectbox("🌐 Language", ["English", "Deutsch", "Nederlands"])
 if lang == "English": l = "en"
 elif lang == "Deutsch": l = "de"
 else: l = "nl"
-
 t = translations[l]
 
 st.title(t["title"])
@@ -80,57 +71,60 @@ st.write(t["subtitle"])
 def load_b2b_data():
     sheet_id = "1Tx8pe8tgo0qpoiTcrTo6kbVZwkx5_uMYaoeYf3mJP6M" 
     url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
-    try:
-        return pd.read_csv(url)
-    except Exception as e:
-        return None
+    try: return pd.read_csv(url)
+    except: return None
 
-# --- BILLEDE FREMVISER (POP-UP) ---
-@st.dialog(t["view"])
+# --- BILLEDE & DATA FREMVISER (POP-UP) ---
+@st.dialog(t["view"], width="large")
 def show_car_details(row, lang_dict):
-    img_string = str(row.get('Billede URL', ''))
+    st.markdown(f"## {row.get('Mærke', '')} {row.get('Model', '')} {row.get('Variant', '')}")
     
-    # Splitter billed-linket op, hvis der er flere (adskilt af komma)
-    images = [url.strip() for url in img_string.split(',')] if img_string and img_string != 'nan' else []
+    try: pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
+    except: pris_int = 0
+    if pris_int > 0: st.markdown(f"### € {pris_int:,}".replace(',', '.'))
     
-    if images:
-        if len(images) > 1:
-            st.write(f"📸 Viser {len(images)} billeder:")
-            # Viser billederne under hinanden i pop-uppen
+    tab1, tab2 = st.tabs(["📸 Photos", lang_dict['tech_data']])
+    
+    with tab1:
+        img_string = str(row.get('Billede URL', ''))
+        images = [url.strip() for url in img_string.split(',')] if img_string and img_string != 'nan' else []
+        if images:
             for img in images:
                 if img.startswith('http'):
                     st.image(img, use_container_width=True)
                     st.write("---")
         else:
-            if images[0].startswith('http'):
-                st.image(images[0], use_container_width=True)
-    else:
-        st.info("Intet billede")
+            st.info("No images available.")
+            
+    with tab2: # TEKNISK DATA
+        c1, c2 = st.columns(2)
+        c1.write(f"**Make:** {row.get('Mærke', '-')}")
+        c1.write(f"**Model:** {row.get('Model', '-')}")
+        c1.write(f"**Variant:** {row.get('Variant', '-')}")
+        c1.write(f"**1st reg. date:** {row.get('Årgang', '-')}")
+        c1.write(f"**Gearbox:** {row.get('Gearkasse', '-')}")
+        c1.write(f"**Odometer:** {row.get('Odometer', '-')}")
+        c1.write(f"**Paint areas (Lakfelter):** {row.get('Antal lakfelter', '-')}")
         
-    st.markdown(f"### {row.get('Mærke', '')} {row.get('Model', '')} {row.get('Variant', '')}")
-    st.write(f"**{lang_dict['vin']}:** {row.get('Stelnummer', 'Ukendt')}")
-    st.write(f"**{lang_dict['loc']}:** {row.get('Lokation', '-')}")
-    
-    try:
-        pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
-        st.markdown(f"## € {pris_int:,}".replace(',', '.'))
-    except:
-        st.markdown(f"## {row.get('Pris', 'Bud ønskes')}")
+        c2.write(f"**EURO norm:** {row.get('EURO norm', '-')}")
+        c2.write(f"**CO2:** {row.get('CO2-udslip', '-')}")
+        c2.write(f"**Reg. nr.:** {row.get('Reg. nr.', '-')}")
+        c2.write(f"**VIN:** {row.get('Stelnummer', '-')}")
+        c2.write(f"**Location:** {row.get('Lokation', '-')}")
+        c2.write(f"**VAT:** {row.get('Moms status', '-')}")
+        c2.write(f"**Tax:** {row.get('Afgift status', '-')}")
         
+        st.write("---")
+        st.write("**Equipment & Remarks:**")
+        st.info(row.get('Udstyr/Bemærkninger', 'No remarks.'))
+        
+    st.write("---")
     vin = str(row.get('Stelnummer', 'Ukendt'))
     mærke_model = f"{row.get('Mærke', '')} {row.get('Model', '')}"
     modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
-    emne = f"{lang_dict['mail_sub']} {mærke_model} (VIN: {vin})"
-    tekst = f"{lang_dict['mail_body']} {vin}"
-    mail_link = f"mailto:{modtagere}?subject={emne}&body={tekst}"
+    mail_link = f"mailto:{modtagere}?subject={lang_dict['mail_sub']} {mærke_model} (VIN: {vin})&body={lang_dict['mail_body']} {vin}"
     
-    st.markdown(f"""
-    <a href='{mail_link}' target='_blank'>
-        <button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 12px; cursor: pointer; font-size: 16px; font-weight: bold;'>
-            {lang_dict['buy']}
-        </button>
-    </a>
-    """, unsafe_allow_html=True)
+    st.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 12px; cursor: pointer; font-size: 16px; font-weight: bold;'>{lang_dict['buy']}</button></a>", unsafe_allow_html=True)
 
 # --- HOVEDPROGRAM ---
 df_b2b = load_b2b_data()
@@ -151,12 +145,9 @@ if df_b2b is not None and not df_b2b.empty:
         afgift_opts = [t["all"]] + list(df_b2b['Afgift status'].dropna().unique()) if 'Afgift status' in df_b2b.columns else [t["all"]]
         afgift_q = c_afgift.selectbox(t["tax"], afgift_opts)
 
-        if search_q:
-            df_b2b = df_b2b[df_b2b.astype(str).apply(lambda x: x.str.contains(search_q, case=False)).any(axis=1)]
-        if moms_q != t["all"]:
-            df_b2b = df_b2b[df_b2b['Moms status'] == moms_q]
-        if afgift_q != t["all"]:
-            df_b2b = df_b2b[df_b2b['Afgift status'] == afgift_q]
+        if search_q: df_b2b = df_b2b[df_b2b.astype(str).apply(lambda x: x.str.contains(search_q, case=False)).any(axis=1)]
+        if moms_q != t["all"]: df_b2b = df_b2b[df_b2b['Moms status'] == moms_q]
+        if afgift_q != t["all"]: df_b2b = df_b2b[df_b2b['Afgift status'] == afgift_q]
 
         st.write("---")
         
@@ -168,50 +159,33 @@ if df_b2b is not None and not df_b2b.empty:
             for col, (_, row) in zip(cols, chunk.iterrows()):
                 with col:
                     with st.container(border=True):
-                        # Billede (Viser kun det første på oversigten)
                         img_string = str(row.get('Billede URL', ''))
                         first_img = img_string.split(',')[0].strip() if img_string and img_string != 'nan' else ''
-                        
-                        if pd.notna(first_img) and first_img.startswith('http'):
-                            st.image(first_img, use_container_width=True)
-                        else:
-                            st.image("https://via.placeholder.com/400x250?text=No+image", use_container_width=True)
+                        if pd.notna(first_img) and first_img.startswith('http'): st.image(first_img, use_container_width=True)
+                        else: st.image("https://via.placeholder.com/400x250?text=No+image", use_container_width=True)
                         
                         st.markdown(f"#### {row.get('Mærke', '')} {row.get('Model', '')}")
                         st.markdown(f"*{row.get('Variant', '')}*")
                         
                         aarstal = str(row.get('Årgang', '-'))[:4]
+                        km_str = str(row.get('Odometer', '-'))
                         
-                        st.markdown(f"📅 **{aarstal}** &nbsp;|&nbsp; 📍 **{row.get('Lokation', '-')}**")
+                        st.markdown(f"📅 **{aarstal}** &nbsp;|&nbsp; 🛣️ **{km_str}**")
                         st.markdown(f"🏷️ {row.get('Moms status', '-')} &nbsp;|&nbsp; ⚖️ {row.get('Afgift status', '-')}")
                         
-                        try:
-                            pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
-                            st.markdown(f"### € {pris_int:,}".replace(',', '.'))
-                        except:
-                            st.markdown(f"### {row.get('Pris', 'Make offer')}")
+                        try: pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
+                        except: pris_int = 0
                         
-                        # Knapperne
+                        if pris_int > 0: st.markdown(f"### € {pris_int:,}".replace(',', '.'))
+                        else: st.markdown(f"### {row.get('Pris', 'Make offer')}")
+                        
                         btn_c1, btn_c2 = st.columns(2)
+                        if btn_c1.button(t["view"], key=f"view_{row.name}"): show_car_details(row, t)
                         
-                        # "View" knap åbner pop-up funktionen
-                        if btn_c1.button(t["view"], key=f"view_{row.name}"):
-                            show_car_details(row, t)
-                        
-                        # Buy knap sender mail
                         vin = str(row.get('Stelnummer', 'Ukendt'))
                         mærke_model = f"{row.get('Mærke', '')} {row.get('Model', '')}"
                         modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
-                        emne = f"{t['mail_sub']} {mærke_model} (VIN: {vin})"
-                        tekst = f"{t['mail_body']} {vin}"
-                        mail_link = f"mailto:{modtagere}?subject={emne}&body={tekst}"
-                        
-                        btn_c2.markdown(f"""
-                        <a href='{mail_link}' target='_blank'>
-                            <button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 6px; cursor: pointer; font-size: 14px; font-weight: bold;'>
-                                {t['buy']}
-                            </button>
-                        </a>
-                        """, unsafe_allow_html=True)
+                        mail_link = f"mailto:{modtagere}?subject={t['mail_sub']} {mærke_model} (VIN: {vin})&body={t['mail_body']} {vin}"
+                        btn_c2.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 6px; cursor: pointer; font-size: 14px; font-weight: bold;'>{t['buy']}</button></a>", unsafe_allow_html=True)
 else:
     st.info(t["no_cars"])
