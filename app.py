@@ -18,18 +18,19 @@ st.write("Velkommen til vores B2B-portal. Her finder du vores aktuelle biler kla
 
 @st.cache_data(ttl=60)
 def load_b2b_data():
-    # SÆT DIT NYE B2B GOOGLE SHEET ID IND LIGE HERUNDER:
-    sheet_id = "DIT_NYE_SHEET_ID_HER" 
-    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
+    # Dit specifikke Google Sheet ID
+    sheet_id = "1Tx8pe8tgo0qpoiTcrTo6kbVZwkx5_uMYaoeYf3mJP6M" 
+    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
     try:
         return pd.read_csv(url)
-    except:
+    except Exception as e:
         return None
 
 df_b2b = load_b2b_data()
 
 if df_b2b is not None and not df_b2b.empty:
     if 'Status' in df_b2b.columns:
+        # Filtrer kun biler der står som 'Aktiv'
         df_b2b = df_b2b[df_b2b['Status'].astype(str).str.strip().str.lower() == 'aktiv']
     
     if df_b2b.empty:
@@ -45,6 +46,7 @@ if df_b2b is not None and not df_b2b.empty:
         afgift_opts = ["Alle"] + list(df_b2b['Afgift status'].dropna().unique()) if 'Afgift status' in df_b2b.columns else ["Alle"]
         afgift_q = c_afgift.selectbox("⚖️ Afgift", afgift_opts)
 
+        # Udfør filtrering
         if search_q:
             df_b2b = df_b2b[df_b2b.astype(str).apply(lambda x: x.str.contains(search_q, case=False)).any(axis=1)]
         if moms_q != "Alle":
@@ -72,20 +74,36 @@ if df_b2b is not None and not df_b2b.empty:
                         # Info
                         st.markdown(f"#### {row.get('Mærke', '')} {row.get('Model', '')}")
                         st.markdown(f"*{row.get('Variant', '')}*")
-                        st.markdown(f"📅 **{row.get('Årgang', '-')}** &nbsp;|&nbsp; 📍 **{row.get('Lokation', '-')}**")
+                        
+                        # Viser kun årstal (f.eks. "2017" i stedet for "2017-02-23")
+                        aarstal = str(row.get('Årgang', '-'))[:4]
+                        
+                        st.markdown(f"📅 **{aarstal}** &nbsp;|&nbsp; 📍 **{row.get('Lokation', '-')}**")
                         st.markdown(f"🏷️ {row.get('Moms status', '-')} &nbsp;|&nbsp; ⚖️ {row.get('Afgift status', '-')}")
                         
-                        # Pris opsatning (EUR)
+                        # Pris opsætning (EUR)
                         try:
-                            pris_int = int(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip())
+                            pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
                             st.markdown(f"### € {pris_int:,}".replace(',', '.'))
                         except:
                             st.markdown(f"### {row.get('Pris', 'Bud ønskes')}")
                         
-                        # Knap
+                        # Knap med Email Logik til begge modtagere
                         vin = str(row.get('Stelnummer', 'Ukendt'))
                         mærke_model = f"{row.get('Mærke', '')} {row.get('Model', '')}"
-                        mail_link = f"mailto:mathias@jeresdomæne.dk?subject=Køb af {mærke_model} (VIN: {vin})&body=Hej Mathias,%0D%0AJeg vil gerne købe bilen med stelnummer: {vin}"
-                        st.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #ff4b4b; color: white; border: none; padding: 10px; cursor: pointer;'>✉️ Kontakt for køb</button></a>", unsafe_allow_html=True)
+                        modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
+                        emne = f"Køb af {mærke_model} (VIN: {vin})"
+                        tekst = f"Hej Mathias og Brian,%0D%0A%0D%0AJeg vil gerne købe bilen med stelnummer: {vin}"
+                        
+                        mail_link = f"mailto:{modtagere}?subject={emne}&body={tekst}"
+                        
+                        # HTML for "Buy now" knappen
+                        st.markdown(f"""
+                        <a href='{mail_link}' target='_blank'>
+                            <button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 12px; cursor: pointer; font-size: 16px; font-weight: bold;'>
+                                🛒 Buy now
+                            </button>
+                        </a>
+                        """, unsafe_allow_html=True)
 else:
     st.info("Der er i øjeblikket ingen aktive biler til salg på B2B-portalen.")
