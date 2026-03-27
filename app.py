@@ -22,11 +22,22 @@ translations = {
         "tax": "⚖️ Tax",
         "all": "All",
         "buy": "🛒 Buy now",
-        "view": "📸 View details",
+        "view": "📸 View details & photos",
         "no_cars": "There are currently no active vehicles for sale.",
         "tech_data": "⚙️ Technical Data",
         "mail_sub": "Purchase of",
         "mail_body": "Hi Mathias and Brian,%0D%0A%0D%0AI would like to purchase the vehicle with VIN:",
+        # Tekniske felter
+        "year": "Year",
+        "odometer": "Odometer",
+        "price": "Price",
+        "gearbox": "Gearbox",
+        "paint_areas": "Paint areas",
+        "location": "Location",
+        "reg_nr": "Reg. nr.",
+        "vin": "VIN",
+        "co2": "CO2-emission",
+        "equip": "Equipment & Remarks",
         # Status oversættelser
         "Inkl. Moms": "Incl. VAT",
         "Ekskl. Moms": "Excl. VAT",
@@ -44,11 +55,21 @@ translations = {
         "tax": "⚖️ Steuer",
         "all": "Alle",
         "buy": "🛒 Jetzt kaufen",
-        "view": "📸 Details ansehen",
+        "view": "📸 Details & Fotos",
         "no_cars": "Derzeit stehen keine aktiven Fahrzeuge zum Verkauf.",
         "tech_data": "⚙️ Technische Daten",
         "mail_sub": "Kauf von",
         "mail_body": "Hallo Mathias und Brian,%0D%0A%0D%0Aich möchte das Fahrzeug kaufen mit der FIN:",
+        "year": "Jahr",
+        "odometer": "Kilometerstand",
+        "price": "Preis",
+        "gearbox": "Getriebe",
+        "paint_areas": "Lackierfelder",
+        "location": "Standort",
+        "reg_nr": "Kennzeichen",
+        "vin": "FIN",
+        "co2": "CO2-Ausstoß",
+        "equip": "Ausstattung & Bemerkungen",
         "Inkl. Moms": "Inkl. MwSt",
         "Ekskl. Moms": "Exkl. MwSt",
         "Momsfri": "MwSt-Frei",
@@ -65,11 +86,21 @@ translations = {
         "tax": "⚖️ Belasting",
         "all": "Alle",
         "buy": "🛒 Nu kopen",
-        "view": "📸 Bekijk details",
+        "view": "📸 Bekijk details & foto's",
         "no_cars": "Er staan momenteel geen actieve voertuigen te koop.",
         "tech_data": "⚙️ Technische Gegevens",
         "mail_sub": "Aankoop van",
         "mail_body": "Hallo Mathias en Brian,%0D%0A%0D%0AIk wil graag het voertuig kopen met chassisnummer:",
+        "year": "Jaar",
+        "odometer": "Kilometerstand",
+        "price": "Prijs",
+        "gearbox": "Versnellingsbak",
+        "paint_areas": "Spuitdelen",
+        "location": "Locatie",
+        "reg_nr": "Kenteken",
+        "vin": "Chassisnummer",
+        "co2": "CO2-uitstoot",
+        "equip": "Uitrusting & Opmerkingen",
         "Inkl. Moms": "Incl. BTW",
         "Ekskl. Moms": "Excl. BTW",
         "Momsfri": "BTW Vrij",
@@ -90,10 +121,9 @@ t = translations[l]
 st.title(t["title"])
 st.write(t["subtitle"])
 
-# Lille hjælpefunktion til at oversætte de danske statusser
 def translate_status(status_str, lang_dict):
     status_clean = str(status_str).strip()
-    return lang_dict.get(status_clean, status_clean) # Returnerer den originale hvis den ikke findes i ordbogen
+    return lang_dict.get(status_clean, status_clean)
 
 @st.cache_data(ttl=60)
 def load_b2b_data():
@@ -105,11 +135,23 @@ def load_b2b_data():
 # --- BILLEDE & DATA FREMVISER (POP-UP) ---
 @st.dialog(t["view"], width="large")
 def show_car_details(row, lang_dict):
-    st.markdown(f"## {row.get('Mærke', '')} {row.get('Model', '')} {row.get('Variant', '')}")
+    st.markdown(f"## {row.get('Mærke', '')} {row.get('Model', '')}")
+    st.markdown(f"#### {row.get('Variant', '')}")
+    st.write("")
     
+    aarstal = str(row.get('Årgang', '-'))[:4]
+    km_str = str(row.get('Odometer', '-'))
     try: pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
     except: pris_int = 0
-    if pris_int > 0: st.markdown(f"### € {pris_int:,}".replace(',', '.'))
+    pris_display = f"€ {pris_int:,}".replace(',', '.') if pris_int > 0 else "Make offer"
+
+    # Lækkert Metric Layout i toppen
+    m1, m2, m3 = st.columns(3)
+    m1.metric(lang_dict["year"], aarstal)
+    m2.metric(lang_dict["odometer"], km_str)
+    m3.metric(lang_dict["price"], pris_display)
+    
+    st.write("---")
     
     tab1, tab2 = st.tabs(["📸 Photos", lang_dict['tech_data']])
     
@@ -129,26 +171,25 @@ def show_car_details(row, lang_dict):
         c1.write(f"**Make:** {row.get('Mærke', '-')}")
         c1.write(f"**Model:** {row.get('Model', '-')}")
         c1.write(f"**Variant:** {row.get('Variant', '-')}")
-        c1.write(f"**1st reg. date:** {row.get('Årgang', '-')}")
-        c1.write(f"**Gearbox:** {row.get('Gearkasse', '-')}")
-        c1.write(f"**Odometer:** {row.get('Odometer', '-')}")
-        c1.write(f"**Paint areas (Lakfelter):** {row.get('Antal lakfelter', '-')}")
+        c1.write(f"**{lang_dict['gearbox']}:** {row.get('Gearkasse', '-')}")
+        c1.write(f"**{lang_dict['paint_areas']}:** {row.get('Antal lakfelter', '-')}")
         
         c2.write(f"**EURO norm:** {row.get('EURO norm', '-')}")
-        c2.write(f"**CO2:** {row.get('CO2-udslip', '-')}")
-        c2.write(f"**Reg. nr.:** {row.get('Reg. nr.', '-')}")
-        c2.write(f"**VIN:** {row.get('Stelnummer', '-')}")
-        c2.write(f"**Location:** {row.get('Lokation', '-')}")
+        c2.write(f"**{lang_dict['co2']}:** {row.get('CO2-udslip', '-')}")
+        c2.write(f"**{lang_dict['reg_nr']}:** {row.get('Reg. nr.', '-')}")
+        c2.write(f"**{lang_dict['vin']}:** {row.get('Stelnummer', '-')}")
+        c2.write(f"**{lang_dict['location']}:** {row.get('Lokation', '-')}")
         
-        # Her oversættes de to status felter!
         disp_moms = translate_status(row.get('Moms status', '-'), lang_dict)
         disp_tax = translate_status(row.get('Afgift status', '-'), lang_dict)
         
-        c2.write(f"**VAT:** {disp_moms}")
+        c1.write("---")
+        c2.write("---")
+        c1.write(f"**VAT:** {disp_moms}")
         c2.write(f"**Tax:** {disp_tax}")
         
         st.write("---")
-        st.write("**Equipment & Remarks:**")
+        st.write(f"**{lang_dict['equip']}:**")
         st.info(row.get('Udstyr/Bemærkninger', 'No remarks.'))
         
     st.write("---")
@@ -157,7 +198,7 @@ def show_car_details(row, lang_dict):
     modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
     mail_link = f"mailto:{modtagere}?subject={lang_dict['mail_sub']} {mærke_model} (VIN: {vin})&body={lang_dict['mail_body']} {vin}"
     
-    st.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 12px; cursor: pointer; font-size: 16px; font-weight: bold;'>{lang_dict['buy']}</button></a>", unsafe_allow_html=True)
+    st.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 14px; cursor: pointer; font-size: 18px; font-weight: bold;'>{lang_dict['buy']}</button></a>", unsafe_allow_html=True)
 
 # --- HOVEDPROGRAM ---
 df_b2b = load_b2b_data()
@@ -169,6 +210,7 @@ if df_b2b is not None and not df_b2b.empty:
     if df_b2b.empty:
         st.info(t["no_cars"])
     else:
+        # Søgning og Filtere
         c_search, c_moms, c_afgift = st.columns(3)
         search_q = c_search.text_input(t["search"])
         
@@ -184,6 +226,7 @@ if df_b2b is not None and not df_b2b.empty:
 
         st.write("---")
         
+        # Grid opsætning
         cols_per_row = 3
         for i in range(0, len(df_b2b), cols_per_row):
             cols = st.columns(cols_per_row)
@@ -192,37 +235,48 @@ if df_b2b is not None and not df_b2b.empty:
             for col, (_, row) in zip(cols, chunk.iterrows()):
                 with col:
                     with st.container(border=True):
+                        # Coverbillede
                         img_string = str(row.get('Billede URL', ''))
                         first_img = img_string.split(',')[0].strip() if img_string and img_string != 'nan' else ''
-                        if pd.notna(first_img) and first_img.startswith('http'): st.image(first_img, use_container_width=True)
-                        else: st.image("https://via.placeholder.com/400x250?text=No+image", use_container_width=True)
+                        if pd.notna(first_img) and first_img.startswith('http'): 
+                            st.image(first_img, use_container_width=True)
+                        else: 
+                            st.image("https://via.placeholder.com/400x250?text=No+image", use_container_width=True)
                         
-                        st.markdown(f"#### {row.get('Mærke', '')} {row.get('Model', '')}")
+                        # Titel og Varianter
+                        st.markdown(f"### {row.get('Mærke', '')} {row.get('Model', '')}")
                         st.markdown(f"*{row.get('Variant', '')}*")
+                        st.write("")
                         
                         aarstal = str(row.get('Årgang', '-'))[:4]
                         km_str = str(row.get('Odometer', '-'))
+                        gearkasse = str(row.get('Gearkasse', '-'))
                         
-                        # Oversæt status på kortet
+                        # Flotte data-linjer med ikoner
+                        st.markdown(f"📅 **{aarstal}** &nbsp; | &nbsp; 🛣️ **{km_str}** &nbsp; | &nbsp; 🕹️ **{gearkasse}**")
+                        
                         disp_moms = translate_status(row.get('Moms status', '-'), t)
                         disp_tax = translate_status(row.get('Afgift status', '-'), t)
-                        
-                        st.markdown(f"📅 **{aarstal}** &nbsp;|&nbsp; 🛣️ **{km_str}**")
-                        st.markdown(f"🏷️ {disp_moms} &nbsp;|&nbsp; ⚖️ {disp_tax}")
+                        st.markdown(f"🏷️ {disp_moms} &nbsp; | &nbsp; ⚖️ {disp_tax}")
                         
                         try: pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
                         except: pris_int = 0
                         
-                        if pris_int > 0: st.markdown(f"### € {pris_int:,}".replace(',', '.'))
-                        else: st.markdown(f"### {row.get('Pris', 'Make offer')}")
+                        st.write("---")
+                        if pris_int > 0: 
+                            st.markdown(f"<h2 style='text-align: center; color: #2e7b32;'>€ {pris_int:,}</h2>".replace(',', '.'), unsafe_allow_html=True)
+                        else: 
+                            st.markdown(f"<h2 style='text-align: center;'>Make offer</h2>", unsafe_allow_html=True)
                         
+                        # Knapper
                         btn_c1, btn_c2 = st.columns(2)
-                        if btn_c1.button(t["view"], key=f"view_{row.name}"): show_car_details(row, t)
+                        if btn_c1.button(t["view"], key=f"view_{row.name}", use_container_width=True): 
+                            show_car_details(row, t)
                         
                         vin = str(row.get('Stelnummer', 'Ukendt'))
                         mærke_model = f"{row.get('Mærke', '')} {row.get('Model', '')}"
                         modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
                         mail_link = f"mailto:{modtagere}?subject={t['mail_sub']} {mærke_model} (VIN: {vin})&body={t['mail_body']} {vin}"
-                        btn_c2.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 6px; cursor: pointer; font-size: 14px; font-weight: bold;'>{t['buy']}</button></a>", unsafe_allow_html=True)
+                        btn_c2.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 5px; cursor: pointer; font-size: 15px; font-weight: bold;'>{t['buy']}</button></a>", unsafe_allow_html=True)
 else:
     st.info(t["no_cars"])
