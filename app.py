@@ -42,6 +42,7 @@ translations = {
         "odometer": "Odometer",
         "price": "Price",
         "gearbox": "Gearbox",
+        "fuel": "Fuel type",
         "paint_areas": "Paint areas",
         "location": "Location",
         "reg_nr": "Reg. nr.",
@@ -51,8 +52,10 @@ translations = {
         # Status oversættelser
         "Inkl. Moms": "Incl. VAT", "Ekskl. Moms": "Excl. VAT", "Momsfri": "VAT Free", "Papegøje": "Parrot plates (DK)",
         "Uden Afgift": "Excl. Tax", "Med Afgift": "Incl. Tax", "Forholdsmæssig": "Proportional Tax",
-        # Gearkasse
-        "Manuel": "Manual", "Automatgear": "Automatic", "Automatisk": "Automatic"
+        "inkl. moms": "Incl. VAT", "ekskl. moms": "Excl. VAT", "uden afgift": "Excl. Tax", "med afgift": "Incl. Tax",
+        # Gearkasse & Drivmiddel
+        "Manuel": "Manual", "Automatgear": "Automatic", "Automatisk": "Automatic",
+        "Benzin": "Petrol", "Diesel": "Diesel", "Hybrid": "Hybrid", "El": "Electric", "Plugin hybrid": "Plugin Hybrid"
     },
     "de": {
         "title": "🚘 Händler-Portal (B2B Fahrzeuge)",
@@ -63,12 +66,14 @@ translations = {
         "tech_data": "⚙️ Technische Daten", "mail_sub": "Kauf von", "mail_body": "Hallo Mathias und Brian,\n\nich möchte das Fahrzeug kaufen mit der FIN: ",
         "sort_default": "Zuletzt hinzugefügt", "sort_price_asc": "Preis: Aufsteigend", "sort_price_desc": "Preis: Absteigend",
         "sort_year_desc": "Jahr: Neueste zuerst", "sort_km_asc": "Kilometer: Niedrigste zuerst",
-        "year": "Jahr", "odometer": "Kilometerstand", "price": "Preis", "gearbox": "Getriebe",
+        "year": "Jahr", "odometer": "Kilometerstand", "price": "Preis", "gearbox": "Getriebe", "fuel": "Kraftstoff",
         "paint_areas": "Lackierfelder", "location": "Standort", "reg_nr": "Kennzeichen", "vin": "FIN",
         "co2": "CO2-Ausstoß", "equip": "Ausstattung & Bemerkungen",
         "Inkl. Moms": "Inkl. MwSt", "Ekskl. Moms": "Exkl. MwSt", "Momsfri": "MwSt-Frei", "Papegøje": "Papageienschilder (DK)",
         "Uden Afgift": "Exkl. Steuer", "Med Afgift": "Inkl. Steuer", "Forholdsmæssig": "Verhältnismäßige Steuer",
-        "Manuel": "Schaltgetriebe", "Automatgear": "Automatik", "Automatisk": "Automatik"
+        "inkl. moms": "Inkl. MwSt", "ekskl. moms": "Exkl. MwSt", "uden afgift": "Exkl. Steuer", "med afgift": "Inkl. Steuer",
+        "Manuel": "Schaltgetriebe", "Automatgear": "Automatik", "Automatisk": "Automatik",
+        "Benzin": "Benzin", "Diesel": "Diesel", "Hybrid": "Hybrid", "El": "Elektro", "Plugin hybrid": "Plugin Hybrid"
     },
     "nl": {
         "title": "🚘 Dealerportaal (B2B Voertuigen)",
@@ -79,19 +84,20 @@ translations = {
         "tech_data": "⚙️ Technische Gegevens", "mail_sub": "Aankoop van", "mail_body": "Hallo Mathias en Brian,\n\nIk wil graag het voertuig kopen met chassisnummer: ",
         "sort_default": "Nieuwste eerst", "sort_price_asc": "Prijs: Laag naar Hoog", "sort_price_desc": "Prijs: Hoog naar Laag",
         "sort_year_desc": "Jaar: Nieuwste eerst", "sort_km_asc": "Kilometerstand: Laagste eerst",
-        "year": "Jaar", "odometer": "Kilometerstand", "price": "Prijs", "gearbox": "Versnellingsbak",
+        "year": "Jaar", "odometer": "Kilometerstand", "price": "Prijs", "gearbox": "Versnellingsbak", "fuel": "Brandstof",
         "paint_areas": "Spuitdelen", "location": "Locatie", "reg_nr": "Kenteken", "vin": "Chassisnummer",
         "co2": "CO2-uitstoot", "equip": "Uitrusting & Opmerkingen",
         "Inkl. Moms": "Incl. BTW", "Ekskl. Moms": "Excl. BTW", "Momsfri": "BTW Vrij", "Papegøje": "Papegaaienplaten (DK)",
         "Uden Afgift": "Excl. Belasting", "Med Afgift": "Incl. Belasting", "Forholdsmæssig": "Proportionele Belasting",
-        "Manuel": "Handgeschakeld", "Automatgear": "Automaat", "Automatisk": "Automaat"
+        "inkl. moms": "Incl. BTW", "ekskl. moms": "Excl. BTW", "uden afgift": "Excl. Belasting", "med afgift": "Incl. Belasting",
+        "Manuel": "Handgeschakeld", "Automatgear": "Automaat", "Automatisk": "Automaat",
+        "Benzin": "Benzine", "Diesel": "Diesel", "Hybrid": "Hybride", "El": "Elektrisch", "Plugin hybrid": "Plugin Hybride"
     }
 }
 
 # ==========================================
 # ⚙️ INDSTILLINGER (WHATSAPP NUMMER)
 # ==========================================
-# Skriv jeres WhatsApp nummer her (Husk landekode, f.eks. 45 for Danmark. Ingen + eller mellemrum)
 WHATSAPP_NUMBER = "4561438202" 
 
 col_lang, _ = st.columns([1, 5])
@@ -106,7 +112,11 @@ st.write(t["subtitle"])
 
 def translate_term(term_str, lang_dict):
     term_clean = str(term_str).strip()
-    return lang_dict.get(term_clean, term_clean)
+    if term_clean in lang_dict:
+        return lang_dict[term_clean]
+    elif term_clean.lower() in lang_dict:
+        return lang_dict[term_clean.lower()]
+    return term_clean
 
 @st.cache_data(ttl=60)
 def load_b2b_data():
@@ -155,7 +165,9 @@ def show_car_details(row, lang_dict):
         c1.write(f"**Variant:** {row.get('Variant', '-')}")
         
         disp_gear = translate_term(row.get('Gearkasse', '-'), lang_dict)
+        disp_fuel = translate_term(row.get('Drivmiddel', '-'), lang_dict)
         c1.write(f"**{lang_dict['gearbox']}:** {disp_gear}")
+        c1.write(f"**{lang_dict['fuel']}:** {disp_fuel}")
         c1.write(f"**{lang_dict['paint_areas']}:** {row.get('Antal lakfelter', '-')}")
         
         c2.write(f"**EURO norm:** {row.get('EURO norm', '-')}")
@@ -182,13 +194,11 @@ def show_car_details(row, lang_dict):
     vin = str(row.get('Stelnummer', 'Ukendt'))
     mærke_model = f"{row.get('Mærke', '')} {row.get('Model', '')}"
     
-    # Email Link
     modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
     emne = urllib.parse.quote(f"{lang_dict['mail_sub']} {mærke_model} (VIN: {vin})")
     tekst = urllib.parse.quote(f"{lang_dict['mail_body']}{vin}")
     mail_link = f"mailto:{modtagere}?subject={emne}&body={tekst}"
     
-    # WhatsApp Link
     wa_text = urllib.parse.quote(f"{lang_dict['mail_body']}{vin}")
     wa_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={wa_text}"
     
@@ -197,7 +207,6 @@ def show_car_details(row, lang_dict):
     btn_col1.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 10px; cursor: pointer; font-size: 15px; font-weight: bold;'>{lang_dict['buy']}</button></a>", unsafe_allow_html=True)
     btn_col2.markdown(f"<a href='{wa_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #25D366; color: white; border: none; padding: 10px; cursor: pointer; font-size: 15px; font-weight: bold; color: white;'>{lang_dict['wa_buy']}</button></a>", unsafe_allow_html=True)
     
-    # Print Knap (Instruktion)
     if btn_col3.button(lang_dict['print'], use_container_width=True):
         st.info("⌨️ Tip: Tryk **CTRL + P** (eller **CMD + P** på Mac) for at gemme som PDF eller printe siden.")
 
@@ -211,12 +220,10 @@ if df_b2b is not None and not df_b2b.empty:
     if df_b2b.empty:
         st.info(t["no_cars"])
     else:
-        # FORBERED DATA TIL SORTERING
         df_b2b['Sort_Price'] = pd.to_numeric(df_b2b['Pris'].astype(str).str.replace(r'[^\d]', '', regex=True), errors='coerce').fillna(0)
         df_b2b['Sort_Year'] = pd.to_numeric(df_b2b['Årgang'].astype(str).str[:4], errors='coerce').fillna(0)
         df_b2b['Sort_Km'] = pd.to_numeric(df_b2b['Odometer'].astype(str).str.replace(r'[^\d]', '', regex=True), errors='coerce').fillna(9999999)
 
-        # TOP MENU: SØGNING OG FILTRERING
         c_search, c_moms, c_afgift, c_sort = st.columns(4)
         
         search_q = c_search.text_input(t["search"])
@@ -227,24 +234,27 @@ if df_b2b is not None and not df_b2b.empty:
         afgift_opts = [t["all"]] + list(df_b2b['Afgift status'].dropna().unique()) if 'Afgift status' in df_b2b.columns else [t["all"]]
         afgift_q = c_afgift.selectbox(t["tax"], afgift_opts)
         
-        # SORTERING
-        sort_opts = [t["sort_default"], t["sort_price_asc"], t["sort_price_desc"], t["sort_year_desc"], t["sort_km_asc"]]
-        sort_q = c_sort.selectbox(t["sort"], sort_opts)
+        sort_opts_map = {
+            t["sort_default"]: "default",
+            t["sort_price_asc"]: "price_asc",
+            t["sort_price_desc"]: "price_desc",
+            t["sort_year_desc"]: "year_desc",
+            t["sort_km_asc"]: "km_asc"
+        }
+        sort_q_label = c_sort.selectbox(t["sort"], list(sort_opts_map.keys()))
+        sort_q = sort_opts_map[sort_q_label]
 
-        # Udfør Filtrering
         if search_q: df_b2b = df_b2b[df_b2b.astype(str).apply(lambda x: x.str.contains(search_q, case=False)).any(axis=1)]
         if moms_q != t["all"]: df_b2b = df_b2b[df_b2b['Moms status'] == moms_q]
         if afgift_q != t["all"]: df_b2b = df_b2b[df_b2b['Afgift status'] == afgift_q]
         
-        # Udfør Sortering
-        if sort_q == t["sort_price_asc"]: df_b2b = df_b2b.sort_values('Sort_Price', ascending=True)
-        elif sort_q == t["sort_price_desc"]: df_b2b = df_b2b.sort_values('Sort_Price', ascending=False)
-        elif sort_q == t["sort_year_desc"]: df_b2b = df_b2b.sort_values('Sort_Year', ascending=False)
-        elif sort_q == t["sort_km_asc"]: df_b2b = df_b2b.sort_values('Sort_Km', ascending=True)
+        if sort_q == "price_asc": df_b2b = df_b2b.sort_values('Sort_Price', ascending=True)
+        elif sort_q == "price_desc": df_b2b = df_b2b.sort_values('Sort_Price', ascending=False)
+        elif sort_q == "year_desc": df_b2b = df_b2b.sort_values('Sort_Year', ascending=False)
+        elif sort_q == "km_asc": df_b2b = df_b2b.sort_values('Sort_Km', ascending=True)
 
         st.write("---")
         
-        # GRID OPSÆTNING
         cols_per_row = 3
         for i in range(0, len(df_b2b), cols_per_row):
             cols = st.columns(cols_per_row)
@@ -253,7 +263,6 @@ if df_b2b is not None and not df_b2b.empty:
             for col, (_, row) in zip(cols, chunk.iterrows()):
                 with col:
                     with st.container(border=True):
-                        # Coverbillede
                         img_string = str(row.get('Billede URL', ''))
                         first_img = img_string.split(',')[0].strip() if img_string and img_string != 'nan' else ''
                         if pd.notna(first_img) and first_img.startswith('http'): 
@@ -261,7 +270,6 @@ if df_b2b is not None and not df_b2b.empty:
                         else: 
                             st.image("https://via.placeholder.com/400x250?text=No+image", use_container_width=True)
                         
-                        # Titel og Varianter
                         st.markdown(f"### {row.get('Mærke', '')} {row.get('Model', '')}")
                         st.markdown(f"*{row.get('Variant', '')}*")
                         st.write("")
@@ -270,8 +278,9 @@ if df_b2b is not None and not df_b2b.empty:
                         km_str = str(row.get('Odometer', '-'))
                         
                         disp_gear = translate_term(row.get('Gearkasse', '-'), t)
+                        disp_fuel = translate_term(row.get('Drivmiddel', '-'), t)
                         
-                        st.markdown(f"📅 **{aarstal}** &nbsp; | &nbsp; 🛣️ **{km_str}** &nbsp; | &nbsp; 🕹️ **{disp_gear}**")
+                        st.markdown(f"📅 **{aarstal}** &nbsp; | &nbsp; 🛣️ **{km_str}** <br> 🕹️ **{disp_gear}** &nbsp; | &nbsp; ⛽ **{disp_fuel}**", unsafe_allow_html=True)
                         
                         disp_moms = translate_term(row.get('Moms status', '-'), t)
                         disp_tax = translate_term(row.get('Afgift status', '-'), t)
@@ -284,8 +293,26 @@ if df_b2b is not None and not df_b2b.empty:
                         else: 
                             st.markdown(f"<h2 style='text-align: center;'>Make offer</h2>", unsafe_allow_html=True)
                         
-                        # View Knap
                         if st.button(t["view"], key=f"view_{row.name}", use_container_width=True): 
                             show_car_details(row, t)
+                        
+                        # KNAPPER PÅ KORTET
+                        vin = str(row.get('Stelnummer', 'Ukendt'))
+                        mærke_model = f"{row.get('Mærke', '')} {row.get('Model', '')}"
+                        
+                        modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
+                        emne = urllib.parse.quote(f"{t['mail_sub']} {mærke_model} (VIN: {vin})")
+                        tekst = urllib.parse.quote(f"{t['mail_body']}{vin}")
+                        mail_link = f"mailto:{modtagere}?subject={emne}&body={tekst}"
+                        
+                        wa_text = urllib.parse.quote(f"{t['mail_body']}{vin}")
+                        wa_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={wa_text}"
+                        
+                        c_btn1, c_btn2, c_btn3 = st.columns(3)
+                        c_btn1.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 6px; cursor: pointer; font-size: 12px; font-weight: bold;'>{t['buy']}</button></a>", unsafe_allow_html=True)
+                        c_btn2.markdown(f"<a href='{wa_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #25D366; color: white; border: none; padding: 6px; cursor: pointer; font-size: 12px; font-weight: bold; color: white;'>{t['wa_buy']}</button></a>", unsafe_allow_html=True)
+                        
+                        if c_btn3.button(t['print'], key=f"print_{row.name}", use_container_width=True):
+                            st.info("⌨️ **CTRL + P** (eller **CMD + P** på Mac)")
 else:
     st.info(t["no_cars"])
