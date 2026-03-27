@@ -12,6 +12,7 @@ hide_st_style = """
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
+# --- SPROG OG OVERSÆTTELSER ---
 translations = {
     "en": {
         "title": "🚘 Dealer Portal (B2B Vehicles)",
@@ -25,7 +26,15 @@ translations = {
         "no_cars": "There are currently no active vehicles for sale.",
         "tech_data": "⚙️ Technical Data",
         "mail_sub": "Purchase of",
-        "mail_body": "Hi Mathias and Brian,%0D%0A%0D%0AI would like to purchase the vehicle with VIN:"
+        "mail_body": "Hi Mathias and Brian,%0D%0A%0D%0AI would like to purchase the vehicle with VIN:",
+        # Status oversættelser
+        "Inkl. Moms": "Incl. VAT",
+        "Ekskl. Moms": "Excl. VAT",
+        "Momsfri": "VAT Free",
+        "Papegøje": "Parrot plates (DK)",
+        "Uden Afgift": "Excl. Tax",
+        "Med Afgift": "Incl. Tax",
+        "Forholdsmæssig": "Proportional Tax"
     },
     "de": {
         "title": "🚘 Händler-Portal (B2B Fahrzeuge)",
@@ -39,7 +48,14 @@ translations = {
         "no_cars": "Derzeit stehen keine aktiven Fahrzeuge zum Verkauf.",
         "tech_data": "⚙️ Technische Daten",
         "mail_sub": "Kauf von",
-        "mail_body": "Hallo Mathias und Brian,%0D%0A%0D%0Aich möchte das Fahrzeug kaufen mit der FIN:"
+        "mail_body": "Hallo Mathias und Brian,%0D%0A%0D%0Aich möchte das Fahrzeug kaufen mit der FIN:",
+        "Inkl. Moms": "Inkl. MwSt",
+        "Ekskl. Moms": "Exkl. MwSt",
+        "Momsfri": "MwSt-Frei",
+        "Papegøje": "Papageienschilder (DK)",
+        "Uden Afgift": "Exkl. Steuer",
+        "Med Afgift": "Inkl. Steuer",
+        "Forholdsmæssig": "Verhältnismäßige Steuer"
     },
     "nl": {
         "title": "🚘 Dealerportaal (B2B Voertuigen)",
@@ -53,7 +69,14 @@ translations = {
         "no_cars": "Er staan momenteel geen actieve voertuigen te koop.",
         "tech_data": "⚙️ Technische Gegevens",
         "mail_sub": "Aankoop van",
-        "mail_body": "Hallo Mathias en Brian,%0D%0A%0D%0AIk wil graag het voertuig kopen met chassisnummer:"
+        "mail_body": "Hallo Mathias en Brian,%0D%0A%0D%0AIk wil graag het voertuig kopen met chassisnummer:",
+        "Inkl. Moms": "Incl. BTW",
+        "Ekskl. Moms": "Excl. BTW",
+        "Momsfri": "BTW Vrij",
+        "Papegøje": "Papegaaienplaten (DK)",
+        "Uden Afgift": "Excl. Belasting",
+        "Med Afgift": "Incl. Belasting",
+        "Forholdsmæssig": "Proportionele Belasting"
     }
 }
 
@@ -66,6 +89,11 @@ t = translations[l]
 
 st.title(t["title"])
 st.write(t["subtitle"])
+
+# Lille hjælpefunktion til at oversætte de danske statusser
+def translate_status(status_str, lang_dict):
+    status_clean = str(status_str).strip()
+    return lang_dict.get(status_clean, status_clean) # Returnerer den originale hvis den ikke findes i ordbogen
 
 @st.cache_data(ttl=60)
 def load_b2b_data():
@@ -111,8 +139,13 @@ def show_car_details(row, lang_dict):
         c2.write(f"**Reg. nr.:** {row.get('Reg. nr.', '-')}")
         c2.write(f"**VIN:** {row.get('Stelnummer', '-')}")
         c2.write(f"**Location:** {row.get('Lokation', '-')}")
-        c2.write(f"**VAT:** {row.get('Moms status', '-')}")
-        c2.write(f"**Tax:** {row.get('Afgift status', '-')}")
+        
+        # Her oversættes de to status felter!
+        disp_moms = translate_status(row.get('Moms status', '-'), lang_dict)
+        disp_tax = translate_status(row.get('Afgift status', '-'), lang_dict)
+        
+        c2.write(f"**VAT:** {disp_moms}")
+        c2.write(f"**Tax:** {disp_tax}")
         
         st.write("---")
         st.write("**Equipment & Remarks:**")
@@ -170,8 +203,12 @@ if df_b2b is not None and not df_b2b.empty:
                         aarstal = str(row.get('Årgang', '-'))[:4]
                         km_str = str(row.get('Odometer', '-'))
                         
+                        # Oversæt status på kortet
+                        disp_moms = translate_status(row.get('Moms status', '-'), t)
+                        disp_tax = translate_status(row.get('Afgift status', '-'), t)
+                        
                         st.markdown(f"📅 **{aarstal}** &nbsp;|&nbsp; 🛣️ **{km_str}**")
-                        st.markdown(f"🏷️ {row.get('Moms status', '-')} &nbsp;|&nbsp; ⚖️ {row.get('Afgift status', '-')}")
+                        st.markdown(f"🏷️ {disp_moms} &nbsp;|&nbsp; ⚖️ {disp_tax}")
                         
                         try: pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
                         except: pris_int = 0
