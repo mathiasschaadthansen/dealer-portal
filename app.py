@@ -23,14 +23,28 @@ translations = {
         "tax": "⚖️ Tax",
         "sort": "🔽 Sort by",
         "all": "All",
-        "buy": "✉️ Email Us",
-        "wa_buy": "💬 WhatsApp Us",
+        "buy": "🛒 Buy",
+        "bid": "⚖️ Bid",
         "print": "🖨️ Print / PDF",
         "view": "📸 View details & photos",
         "no_cars": "There are currently no active vehicles for sale.",
         "tech_data": "⚙️ Technical Data",
         "mail_sub": "Purchase of",
-        "mail_body": "Hi Mathias and Brian,\n\nI would like to purchase the vehicle with VIN: ",
+        "mail_koeb_body": "Hi Mathias and Brian,\n\nI would like to purchase the vehicle at the advertised price.\n\nVIN: ",
+        "mail_byd_body": "Hi Mathias and Brian,\n\nI would like to make an offer on the vehicle.\n\nMy offer is: [Enter your bid here] EUR\n\nVIN: ",
+        # Pakke funktion
+        "pkg_title": "📦 Your Package",
+        "pkg_info": "Click '➕ Add to package' under the cars to bundle them and make a combined offer.",
+        "pkg_your_bids": "**Your bids per car:**",
+        "pkg_list_price": "List price",
+        "pkg_total_list": "**Total list price:**",
+        "pkg_total_bid": "**Your total bid:**",
+        "pkg_send_mail": "✉️ Send combined bid (Mail)",
+        "pkg_send_wa": "💬 Send combined bid (WA)",
+        "pkg_clear": "🗑️ Clear package",
+        "pkg_add": "➕ Add to package",
+        "pkg_rm": "➖ Remove",
+        "pkg_mail_body": "Hi Mathias and Brian,\n\nI would like to make the following combined offer for {count} cars:\n\n{cars}\n\nTotal combined bid: € {total}\n\nBest regards,",
         # Sortering
         "sort_default": "Newest added (Default)",
         "sort_price_asc": "Price: Low to High",
@@ -61,9 +75,16 @@ translations = {
         "title": "🚘 Händler-Portal (B2B Fahrzeuge)",
         "subtitle": "Willkommen in unserem B2B-Portal. Hier finden Sie unsere aktuellen Fahrzeuge für den Export oder Handel.",
         "search": "🔍 Marke/Modell suchen", "vat": "🏷️ MwSt", "tax": "⚖️ Steuer", "sort": "🔽 Sortieren nach",
-        "all": "Alle", "buy": "✉️ Email senden", "wa_buy": "💬 WhatsApp", "print": "🖨️ Drucken / PDF",
+        "all": "Alle", "buy": "🛒 Kaufen", "bid": "⚖️ Bieten", "print": "🖨️ Drucken / PDF",
         "view": "📸 Details & Fotos", "no_cars": "Derzeit stehen keine aktiven Fahrzeuge zum Verkauf.",
-        "tech_data": "⚙️ Technische Daten", "mail_sub": "Kauf von", "mail_body": "Hallo Mathias und Brian,\n\nich möchte das Fahrzeug kaufen mit der FIN: ",
+        "tech_data": "⚙️ Technische Daten", "mail_sub": "Kauf von", 
+        "mail_koeb_body": "Hallo Mathias und Brian,\n\nich möchte das Fahrzeug zum angegebenen Preis kaufen.\n\nFIN: ",
+        "mail_byd_body": "Hallo Mathias und Brian,\n\nich möchte ein Angebot für das Fahrzeug abgeben.\n\nMein Angebot lautet: [Bitte Angebot eingeben] EUR\n\nFIN: ",
+        "pkg_title": "📦 Ihr Paket", "pkg_info": "Klicken Sie auf '➕ Zum Paket hinzufügen', um ein Gesamtangebot abzugeben.",
+        "pkg_your_bids": "**Ihre Gebote pro Auto:**", "pkg_list_price": "Listenpreis", "pkg_total_list": "**Gesamtlistenpreis:**",
+        "pkg_total_bid": "**Ihr Gesamtgebot:**", "pkg_send_mail": "✉️ Gesamtangebot senden (Mail)", "pkg_send_wa": "💬 Gesamtangebot senden (WA)",
+        "pkg_clear": "🗑️ Paket leeren", "pkg_add": "➕ Zum Paket", "pkg_rm": "➖ Entfernen",
+        "pkg_mail_body": "Hallo Mathias und Brian,\n\nich möchte folgendes Gesamtangebot für {count} Fahrzeuge abgeben:\n\n{cars}\n\nMein Gesamtgebot: € {total}\n\nMit freundlichen Grüßen,",
         "sort_default": "Zuletzt hinzugefügt", "sort_price_asc": "Preis: Aufsteigend", "sort_price_desc": "Preis: Absteigend",
         "sort_year_desc": "Jahr: Neueste zuerst", "sort_km_asc": "Kilometer: Niedrigste zuerst",
         "year": "Jahr", "odometer": "Kilometerstand", "price": "Preis", "gearbox": "Getriebe", "fuel": "Kraftstoff",
@@ -79,9 +100,16 @@ translations = {
         "title": "🚘 Dealerportaal (B2B Voertuigen)",
         "subtitle": "Welkom op ons B2B portaal. Hier vindt u onze actuele voertuigen klaar voor export of handel.",
         "search": "🔍 Zoek merk/model", "vat": "🏷️ BTW", "tax": "⚖️ Belasting", "sort": "🔽 Sorteer op",
-        "all": "Alle", "buy": "✉️ Email ons", "wa_buy": "💬 WhatsApp", "print": "🖨️ Print / PDF",
+        "all": "Alle", "buy": "🛒 Kopen", "bid": "⚖️ Bieden", "print": "🖨️ Print / PDF",
         "view": "📸 Bekijk details & foto's", "no_cars": "Er staan momenteel geen actieve voertuigen te koop.",
-        "tech_data": "⚙️ Technische Gegevens", "mail_sub": "Aankoop van", "mail_body": "Hallo Mathias en Brian,\n\nIk wil graag het voertuig kopen met chassisnummer: ",
+        "tech_data": "⚙️ Technische Gegevens", "mail_sub": "Aankoop van", 
+        "mail_koeb_body": "Hallo Mathias en Brian,\n\nIk wil graag het voertuig voor de geadverteerde prijs kopen.\n\nChassisnummer: ",
+        "mail_byd_body": "Hallo Mathias en Brian,\n\nIk wil graag een bod uitbrengen op het voertuig.\n\nMijn bod is: [Vul uw bod in] EUR\n\nChassisnummer: ",
+        "pkg_title": "📦 Uw Pakket", "pkg_info": "Klik op '➕ Aan pakket toevoegen' om voertuigen te bundelen voor een totaalbod.",
+        "pkg_your_bids": "**Uw biedingen per auto:**", "pkg_list_price": "Lijstprijs", "pkg_total_list": "**Totale lijstprijs:**",
+        "pkg_total_bid": "**Uw totaalbod:**", "pkg_send_mail": "✉️ Stuur totaalbod (Mail)", "pkg_send_wa": "💬 Stuur totaalbod (WA)",
+        "pkg_clear": "🗑️ Pakket wissen", "pkg_add": "➕ Aan pakket", "pkg_rm": "➖ Verwijderen",
+        "pkg_mail_body": "Hallo Mathias en Brian,\n\nIk wil graag het volgende totaalbod doen voor {count} voertuigen:\n\n{cars}\n\nTotaalbod: € {total}\n\nMet vriendelijke groet,",
         "sort_default": "Nieuwste eerst", "sort_price_asc": "Prijs: Laag naar Hoog", "sort_price_desc": "Prijs: Hoog naar Laag",
         "sort_year_desc": "Jaar: Nieuwste eerst", "sort_km_asc": "Kilometerstand: Laagste eerst",
         "year": "Jaar", "odometer": "Kilometerstand", "price": "Prijs", "gearbox": "Versnellingsbak", "fuel": "Brandstof",
@@ -106,6 +134,65 @@ if lang == "English": l = "en"
 elif lang == "Deutsch": l = "de"
 else: l = "nl"
 t = translations[l]
+
+# ==========================================
+# 🛒 SESSION STATE (PAKKEKØB / KURV)
+# ==========================================
+if 'cart_exp' not in st.session_state:
+    st.session_state['cart_exp'] = {}
+
+# ==========================================
+# 📦 SIDEMENU (DIN PAKKE)
+# ==========================================
+with st.sidebar:
+    st.header(t["pkg_title"])
+    if not st.session_state['cart_exp']:
+        st.info(t["pkg_info"])
+    else:
+        total_list_price = 0
+        total_bid_price = 0
+        cart_text_lines = []
+        
+        st.write(t["pkg_your_bids"])
+        for key, car in st.session_state['cart_exp'].items():
+            total_list_price += car['price_int']
+            current_bid = car.get('bid_price', car['price_int'])
+            
+            listepris_str = f"€ {car['price_int']:,}".replace(',', '.')
+            new_bid = st.number_input(
+                f"{car['title']} ({t['pkg_list_price']}: {listepris_str})",
+                min_value=0,
+                value=int(current_bid),
+                step=100,
+                key=f"bid_{key}"
+            )
+            
+            st.session_state['cart_exp'][key]['bid_price'] = new_bid
+            total_bid_price += new_bid
+            
+            bid_str = f"€ {new_bid:,}".replace(',', '.')
+            cart_text_lines.append(f"- {car['title']} (VIN: {car['vin']}) -> Bid: {bid_str}")
+            
+        st.write("---")
+        st.write(f"{t['pkg_total_list']} € {total_list_price:,}".replace(',', '.'))
+        st.write(t["pkg_total_bid"])
+        st.markdown(f"<h3 style='color: #2e7b32; margin-top:-10px;'>€ {total_bid_price:,}</h3>".replace(',', '.'), unsafe_allow_html=True)
+        
+        st.write("---")
+        cars_str = "\n".join(cart_text_lines)
+        total_bid_str = f"{total_bid_price:,}".replace(',', '.')
+        
+        mail_body = t["pkg_mail_body"].format(count=len(st.session_state['cart_exp']), cars=cars_str, total=total_bid_str)
+        
+        mail_link = f"mailto:matsc@maulbiler.dk,brmau@maulbiler.dk?subject=Offer on {len(st.session_state['cart_exp'])} cars&body={urllib.parse.quote(mail_body)}"
+        wa_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={urllib.parse.quote(mail_body)}"
+        
+        st.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 10px; cursor: pointer; font-size: 14px; font-weight: bold; margin-bottom: 8px;'>{t['pkg_send_mail']}</button></a>", unsafe_allow_html=True)
+        st.markdown(f"<a href='{wa_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #25D366; color: white; border: none; padding: 10px; cursor: pointer; font-size: 14px; font-weight: bold; color: white; margin-bottom: 20px;'>{t['pkg_send_wa']}</button></a>", unsafe_allow_html=True)
+        
+        if st.button(t["pkg_clear"], use_container_width=True):
+            st.session_state['cart_exp'] = {}
+            st.rerun()
 
 st.title(t["title"])
 st.write(t["subtitle"])
@@ -135,7 +222,6 @@ def show_car_details(row, lang_dict):
     aarstal = str(row.get('Årgang', '-'))[:4]
     km_str = str(row.get('Odometer', '-'))
     
-    # Henter Pris euro og retter evt. format fejl (.0)
     try: 
         p_str = str(row.get('Pris euro', '0')).strip()
         if p_str.endswith('.0'): p_str = p_str[:-2]
@@ -198,32 +284,27 @@ def show_car_details(row, lang_dict):
         
     st.write("---")
     
-    # KNAPPER I POP-UP
     vin = str(row.get('Stelnummer', 'Ukendt'))
     mærke_model = f"{row.get('Mærke', '')} {row.get('Model', '')}"
-    
     modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
-    emne = urllib.parse.quote(f"{lang_dict['mail_sub']} {mærke_model} (VIN: {vin})")
-    tekst = urllib.parse.quote(f"{lang_dict['mail_body']}{vin}")
-    mail_link = f"mailto:{modtagere}?subject={emne}&body={tekst}"
     
-    wa_text = urllib.parse.quote(f"{lang_dict['mail_body']}{vin}")
-    wa_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={wa_text}"
+    emne_koeb = urllib.parse.quote(f"{lang_dict['mail_sub']} {mærke_model} (VIN: {vin})")
+    tekst_koeb = urllib.parse.quote(f"{lang_dict['mail_koeb_body']}{vin}")
+    mail_link_koeb = f"mailto:{modtagere}?subject={emne_koeb}&body={tekst_koeb}"
     
-    btn_col1, btn_col2, btn_col3 = st.columns(3)
+    emne_byd = urllib.parse.quote(f"Offer: {mærke_model} (VIN: {vin})")
+    tekst_byd = urllib.parse.quote(f"{lang_dict['mail_byd_body']}{vin}")
+    mail_link_byd = f"mailto:{modtagere}?subject={emne_byd}&body={tekst_byd}"
     
-    btn_col1.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 10px; cursor: pointer; font-size: 15px; font-weight: bold;'>{lang_dict['buy']}</button></a>", unsafe_allow_html=True)
-    btn_col2.markdown(f"<a href='{wa_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #25D366; color: white; border: none; padding: 10px; cursor: pointer; font-size: 15px; font-weight: bold; color: white;'>{lang_dict['wa_buy']}</button></a>", unsafe_allow_html=True)
-    
-    if btn_col3.button(lang_dict['print'], use_container_width=True):
-        st.info("⌨️ Tip: Tryk **CTRL + P** (eller **CMD + P** på Mac) for at gemme som PDF eller printe siden.")
+    btn_col1, btn_col2 = st.columns(2)
+    btn_col1.markdown(f"<a href='{mail_link_koeb}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 12px; cursor: pointer; font-size: 16px; font-weight: bold;'>{lang_dict['buy']}</button></a>", unsafe_allow_html=True)
+    btn_col2.markdown(f"<a href='{mail_link_byd}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #555555; color: white; border: none; padding: 12px; cursor: pointer; font-size: 16px; font-weight: bold;'>{lang_dict['bid']}</button></a>", unsafe_allow_html=True)
 
 # --- HOVEDPROGRAM ---
 df_b2b = load_b2b_data()
 
 if df_b2b is not None and not df_b2b.empty:
     
-    # Finder den rigtige Status kolonne til eksport portalen (Ignorerer Status DK)
     status_cols = [c for c in df_b2b.columns if 'Status' in c and c not in ['Moms status', 'Afgift status', 'Status DK']]
     if status_cols:
         active_col = status_cols[-1]
@@ -232,7 +313,6 @@ if df_b2b is not None and not df_b2b.empty:
     if df_b2b.empty:
         st.info(t["no_cars"])
     else:
-        # FORBERED DATA TIL SORTERING (Rettet til 'Pris euro')
         df_b2b['Sort_Price'] = pd.to_numeric(df_b2b['Pris euro'].astype(str).str.replace(r'\.0$', '', regex=True).str.replace(r'[^\d]', '', regex=True), errors='coerce').fillna(0)
         df_b2b['Sort_Year'] = pd.to_numeric(df_b2b['Årgang'].astype(str).str[:4], errors='coerce').fillna(0)
         df_b2b['Sort_Km'] = pd.to_numeric(df_b2b['Odometer'].astype(str).str.replace(r'[^\d]', '', regex=True), errors='coerce').fillna(9999999)
@@ -302,30 +382,44 @@ if df_b2b is not None and not df_b2b.empty:
                         pris_int = row.get('Sort_Price', 0)
                         st.write("---")
                         if pris_int > 0: 
-                            st.markdown(f"<h2 style='text-align: center; color: #2e7b32;'>€ {int(pris_int):,}</h2>".replace(',', '.'), unsafe_allow_html=True)
+                            st.markdown(f"<h2 style='text-align: center; color: #2e7b32; font-weight: bold;'>€ {int(pris_int):,}</h2>".replace(',', '.'), unsafe_allow_html=True)
                         else: 
                             st.markdown(f"<h2 style='text-align: center;'>Make offer</h2>", unsafe_allow_html=True)
                         
                         if st.button(t["view"], key=f"view_{row.name}", use_container_width=True): 
                             show_car_details(row, t)
                         
-                        # KNAPPER PÅ KORTET
                         vin = str(row.get('Stelnummer', 'Ukendt'))
                         mærke_model = f"{row.get('Mærke', '')} {row.get('Model', '')}"
-                        
                         modtagere = "matsc@maulbiler.dk,brmau@maulbiler.dk"
-                        emne = urllib.parse.quote(f"{t['mail_sub']} {mærke_model} (VIN: {vin})")
-                        tekst = urllib.parse.quote(f"{t['mail_body']}{vin}")
-                        mail_link = f"mailto:{modtagere}?subject={emne}&body={tekst}"
                         
-                        wa_text = urllib.parse.quote(f"{t['mail_body']}{vin}")
-                        wa_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={wa_text}"
+                        emne_koeb = urllib.parse.quote(f"{t['mail_sub']} {mærke_model} (VIN: {vin})")
+                        tekst_koeb = urllib.parse.quote(f"{t['mail_koeb_body']}{vin}")
+                        mail_link_koeb = f"mailto:{modtagere}?subject={emne_koeb}&body={tekst_koeb}"
                         
-                        c_btn1, c_btn2, c_btn3 = st.columns(3)
-                        c_btn1.markdown(f"<a href='{mail_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 6px; cursor: pointer; font-size: 12px; font-weight: bold;'>{t['buy']}</button></a>", unsafe_allow_html=True)
-                        c_btn2.markdown(f"<a href='{wa_link}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #25D366; color: white; border: none; padding: 6px; cursor: pointer; font-size: 12px; font-weight: bold; color: white;'>{t['wa_buy']}</button></a>", unsafe_allow_html=True)
+                        emne_byd = urllib.parse.quote(f"Offer: {mærke_model} (VIN: {vin})")
+                        tekst_byd = urllib.parse.quote(f"{t['mail_byd_body']}{vin}")
+                        mail_link_byd = f"mailto:{modtagere}?subject={emne_byd}&body={tekst_byd}"
                         
-                        if c_btn3.button(t['print'], key=f"print_{row.name}", use_container_width=True):
-                            st.info("⌨️ **CTRL + P** (eller **CMD + P** på Mac)")
+                        c_btn1, c_btn2 = st.columns(2)
+                        c_btn1.markdown(f"<a href='{mail_link_koeb}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #2e7b32; color: white; border: none; padding: 6px; cursor: pointer; font-size: 14px; font-weight: bold;'>{t['buy']}</button></a>", unsafe_allow_html=True)
+                        c_btn2.markdown(f"<a href='{mail_link_byd}' target='_blank'><button style='width: 100%; border-radius: 5px; background-color: #555555; color: white; border: none; padding: 6px; cursor: pointer; font-size: 14px; font-weight: bold;'>{t['bid']}</button></a>", unsafe_allow_html=True)
+                        
+                        st.write("")
+                        vin_key = vin if vin != 'Ukendt' else str(row.name)
+                        if vin_key in st.session_state['cart_exp']:
+                            if st.button(t["pkg_rm"], key=f"rm_{row.name}", use_container_width=True):
+                                del st.session_state['cart_exp'][vin_key]
+                                st.rerun()
+                        else:
+                            if st.button(t["pkg_add"], key=f"add_{row.name}", use_container_width=True):
+                                st.session_state['cart_exp'][vin_key] = {
+                                    'title': mærke_model,
+                                    'price_int': int(pris_int),
+                                    'vin': vin,
+                                    'bid_price': int(pris_int)
+                                }
+                                st.rerun()
+
 else:
     st.info(t["no_cars"])
