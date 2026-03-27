@@ -134,8 +134,16 @@ def show_car_details(row, lang_dict):
     
     aarstal = str(row.get('Årgang', '-'))[:4]
     km_str = str(row.get('Odometer', '-'))
-    try: pris_int = int(float(str(row.get('Pris', '0')).replace('€', '').replace('.', '').replace(',', '').strip()))
-    except: pris_int = 0
+    
+    # Henter Pris euro og retter evt. format fejl (.0)
+    try: 
+        p_str = str(row.get('Pris euro', '0')).strip()
+        if p_str.endswith('.0'): p_str = p_str[:-2]
+        p_clean = "".join(filter(str.isdigit, p_str))
+        pris_int = int(p_clean) if p_clean else 0
+    except: 
+        pris_int = 0
+        
     pris_display = f"€ {pris_int:,}".replace(',', '.') if pris_int > 0 else "Make offer"
 
     m1, m2, m3 = st.columns(3)
@@ -214,13 +222,18 @@ def show_car_details(row, lang_dict):
 df_b2b = load_b2b_data()
 
 if df_b2b is not None and not df_b2b.empty:
-    if 'Status' in df_b2b.columns:
-        df_b2b = df_b2b[df_b2b['Status'].astype(str).str.strip().str.lower() == 'aktiv']
+    
+    # Finder den rigtige Status kolonne til eksport portalen (Ignorerer Status DK)
+    status_cols = [c for c in df_b2b.columns if 'Status' in c and c not in ['Moms status', 'Afgift status', 'Status DK']]
+    if status_cols:
+        active_col = status_cols[-1]
+        df_b2b = df_b2b[df_b2b[active_col].astype(str).str.strip().str.lower() == 'aktiv']
     
     if df_b2b.empty:
         st.info(t["no_cars"])
     else:
-        df_b2b['Sort_Price'] = pd.to_numeric(df_b2b['Pris'].astype(str).str.replace(r'[^\d]', '', regex=True), errors='coerce').fillna(0)
+        # FORBERED DATA TIL SORTERING (Rettet til 'Pris euro')
+        df_b2b['Sort_Price'] = pd.to_numeric(df_b2b['Pris euro'].astype(str).str.replace(r'\.0$', '', regex=True).str.replace(r'[^\d]', '', regex=True), errors='coerce').fillna(0)
         df_b2b['Sort_Year'] = pd.to_numeric(df_b2b['Årgang'].astype(str).str[:4], errors='coerce').fillna(0)
         df_b2b['Sort_Km'] = pd.to_numeric(df_b2b['Odometer'].astype(str).str.replace(r'[^\d]', '', regex=True), errors='coerce').fillna(9999999)
 
