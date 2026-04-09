@@ -287,7 +287,6 @@ def show_car_details(row, lang_dict):
     maerke_model = f"{safe(row.get('maerke'))} {safe(row.get('model'))}"
     modtagere    = "matsc@maulbiler.dk,brmau@maulbiler.dk"
 
-    mail_link_koeb = f"mailto:{modtagere}?subject={urllib.parse.quote(f'{lang_dict[chr(109)+chr(97)+chr(105)+chr(108)+(chr(95)+chr(115)+chr(117)+chr(98))} {maerke_model} (VIN: {vin})')}&body={urllib.parse.quote(f'{lang_dict[chr(109)+chr(97)+chr(105)+chr(108)+chr(95)+chr(107)+chr(111)+chr(101)+chr(98)+chr(95)+chr(98)+chr(111)+chr(100)+chr(121)]}{vin}')}"
     mail_link_koeb = f"mailto:{modtagere}?subject={urllib.parse.quote(lang_dict['mail_sub'] + ' ' + maerke_model + ' (VIN: ' + vin + ')')}&body={urllib.parse.quote(lang_dict['mail_koeb_body'] + vin)}"
     mail_link_byd  = f"mailto:{modtagere}?subject={urllib.parse.quote('Offer: ' + maerke_model + ' (VIN: ' + vin + ')')}&body={urllib.parse.quote(lang_dict['mail_byd_body'] + vin)}"
 
